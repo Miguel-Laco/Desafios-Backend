@@ -1,1 +1,1 @@
-[{"id":2,"title":"pala","description":"excavar","price":8000,"thumbnail":"./img/pala.jpg","code":"PAL2","stock":8},{"id":3,"title":"hacha","description":"talar","price":3000,"thumbnail":"./img/hacha.jpg","code":"HAC3","stock":8}]
+[]
