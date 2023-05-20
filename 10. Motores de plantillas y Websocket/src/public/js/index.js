@@ -1,4 +1,5 @@
 const socket =io();
+console.log("Script desde una plantilla");
 
 socket.emit("prueba", "Hola soy una prueba desde websocket")
 

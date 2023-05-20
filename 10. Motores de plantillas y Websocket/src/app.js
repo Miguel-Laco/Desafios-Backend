@@ -15,10 +15,10 @@ app.use(express.urlencoded({extended: true})); //Para que el server interprete u
 app.use(express.json()); //Para que interprete mensajes tipo JSON
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
-app.engine("handlebars", handlebars.engine());
-app.set("views", "./views");
-app.set("view engine", "handlebars");
 app.use("/", views);
+app.engine("handlebars", handlebars.engine()); //Inicializo el motor de plantillas
+app.set("views", "./views"); //Indico donde estarán las vistas
+app.set("view engine", "handlebars"); //Indicamos que para renderizar, utilice handlebars
 app.use(express.static(`public`));
 
 
