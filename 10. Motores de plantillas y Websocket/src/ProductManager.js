@@ -48,38 +48,43 @@ class ProductManager{
         }
     }
 
-    async addProducts(title, description, code, price, status, stock, category, thumbnail){
-        try {
-            let productos = await this.readProducts();
-        //Antes de avanzar, valido que el producto traiga todos los campos
-            let nuevoProducto = {
-                id: await this.idGenerator(),
-                title,
-                description,
-                code,
-                price,
-                status: true,
-                stock,
-                category,
-                thumbnail
-            }
-            this.productTemp.push(nuevoProducto); //Los almaceno en un arreglo temporal
-            //Valido que el código no exista en el .TXT 
-            const existe = productos.find(prod => prod.code == nuevoProducto.code);
-                if (existe) {
-            console.log(`Su codigo de producto ${nuevoProducto.code} ya existe en la base y no será agregado`);
-                    // Si se repite en algún lugar, vacío el temporal, para no saltear un ID en idGenerator
-                    this.productTemp = []
-                } else{
-                //si esta todo ok, lo subo a otro temporal, que uso para validar luego que no vuelvan a sumar el mismo código de articulo y ya voy escribiendo el TXT
-                    this.productTemp = []
-                    productos.push(nuevoProducto);
-                    await fs.promises.writeFile(this.path, JSON.stringify(productos))
-                    return{status:"Success", msg:`Se creo: ${nuevoProducto.title}`};
+    async addProducts(title, description, code, price, stock, category, thumbnail){
+        if (!title || !description || !code || !price || !stock || !category ){
+            return {status:'Denegado',msg:'Debe colocar todos los campos'} ;
+            }else{
+                try {
+                    let productos = await this.readProducts();
+                //Antes de avanzar, valido que el producto traiga todos los campos
+                    let nuevoProducto = {
+                        id: await this.idGenerator(),
+                        title,
+                        description,
+                        code,
+                        price,
+                        status: true,
+                        stock,
+                        category,
+                        thumbnail:Array.isArray(thumbnail) ? thumbnail : [thumbnail] //Cambié la lógica para que reciba un arreglo de postman, o una única imagen de websocket
+                    }
+                    this.productTemp.push(nuevoProducto); //Los almaceno en un arreglo temporal
+                    //Valido que el código no exista en el .TXT 
+                    const existe = productos.find(prod => prod.code == nuevoProducto.code);
+                        if (existe) {
+                    console.log(`Su codigo de producto ${nuevoProducto.code} ya existe en la base y no será agregado`);
+                            // Si se repite en algún lugar, vacío el temporal, para no saltear un ID en idGenerator
+                            this.productTemp = []
+                        } else{
+                        //si esta todo ok, lo subo a otro temporal, que uso para validar luego que no vuelvan a sumar el mismo código de articulo y ya voy escribiendo el TXT
+                            this.productTemp = []
+                            productos.push(nuevoProducto);
+                            await fs.promises.writeFile(this.path, JSON.stringify(productos))
+                            return{status:"Success", msg:`Se creo: ${nuevoProducto.title}`};
+                        }
+                } catch (error) {
+                    console.log(error);
                 }
-        } catch (error) {
-            console.log(error);
-        }
+            }
+        
     }
 
     async updateProduct (id, campos) {

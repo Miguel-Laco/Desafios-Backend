@@ -43,7 +43,7 @@ try {
     if (!product.title || !product.description || !product.code || !product.price || !product.stock || !product.category){
         res.status(400).send({status: "error", error: "Invalid Parameters"})
     }else{
-        res.send(await manager.addProducts(product.title, product.description, product.code, product.price, product.status, product.stock, product.category, product.thumbnail));
+        res.send(await manager.addProducts(product.title, product.description, product.code, product.price, product.stock, product.category, product.thumbnail));
     }
 } catch (error) {
     console.log(error);

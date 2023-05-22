@@ -1,14 +1,28 @@
-{{!-- Acá tengo que poder mostrar la lista de productos de forma async --}}
+{{!-- Muestro la lista de productos en la página raiz --}}
+{{!-- Tiene la misma validación para mostrar imagenes si el arreglo thumbnail tiene algo, pero usando la lógica de handlebars  --}}
+
+<div class="container">
+<div class="row">
 {{#each products}}
-<div>
-    <p>ID:{{this.id}}</p>
-    <p>Title: {{this.title}}</p>
-    <p>Description: {{this.description}}</p>
-    <p>Code: {{this.code}}</p>
-    <p>Price: {{this.price}}</p>
-    <p>Status: {{this.status}}</p>
-    <p>Stock: {{this.stock}}</p>
-    <p>Category: {{this.category}}</p>
-    <p>Thumbnail: {{this.thumbnail}}</p>
+<div class="col my-2">
+<div class="card text-center" style="width: 12rem;">
+    <p class="card-text">ID:{{this.id}}</p>
+    <h5 class="card-title">{{this.title}}</h5>
+  <div class="card-body">
+    {{#if this.thumbnail}}
+      {{#each this.thumbnail}}
+        <img src={{this}} class="card-img-top" alt="Imagen de producto">
+      {{/each}}
+    {{/if}}
+    <p class="card-text">CODE: {{this.code}}</p>
+    <p class="card-text">DESC: {{this.description}}</p>
+    <p class="card-text">$ {{this.price}}</p>
+    <p class="card-text">STATUS: {{this.status}}</p>
+    <p class="card-text">CAT: {{this.category}}</p>
+    <p class="card-text">STOCK: {{this.stock}}</p>
+  </div>
+</div>
 </div>
 {{/each}}
+</div>
+</div>

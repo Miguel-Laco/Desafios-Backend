@@ -4,6 +4,8 @@ import cartRouter from "./routes/carts.js";
 import handlebars from "express-handlebars";
 import views from "./routes/views.js"
 import { Server } from "socket.io";
+import ProductManager from "./ProductManager.js";
+
 
 
 const app = express(); //Inicializo el modulo express y estará contenido en app
@@ -21,13 +23,34 @@ app.set("views", "./views"); //Indico donde estarán las vistas
 app.set("view engine", "handlebars"); //Indicamos que para renderizar, utilice handlebars
 app.use(express.static(`public`));
 
+const manager = new ProductManager() //Inicializo la clase
 
-socketServer.on(`connection`, socket => {
+
+//Comienzo a escuchar la conección de un socket
+socketServer.on(`connection`, async (socket) => {
+    //Muestro por log que se conectó un nuevo cliente
     console.log("Nuevo Cliente Conectado");
-    socket.on("prueba", data =>{console.log(data)})
+    //Enviío la lista de productos al socket conectado
+        let products = await manager.readProducts();
+        socket.emit("listaProductos",  {
+            products
+        })
 
-    /* Acá debería crear socket.on, para escuchar un nuevo evento, que traiga el nuevo producto */
-    /* socket.on("nombre de evento", data =>{console.log(data)}) */
+
+    //Comienzo a escuchar el socket, para crear un producto
+    socket.on("crearProducto", async (data) => {
+        console.log(data);
+        //Luego lo envío a la función addProducts, la data recibida del socket
+        await manager.addProducts( data.title, data.description, data.code, data.price, data.stock, data.category, data.thumbnail)
+    })
+    
+
+    //Comienzo a esuchar el socket, para eliminar un producto
+    socket.on("productDelete", async (id) => {
+        //Luego lo envío a la función deleteProducts
+        await manager.deleteProduct(id)
+    })
+
 })
 
 
