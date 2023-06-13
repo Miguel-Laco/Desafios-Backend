@@ -4,8 +4,8 @@ import cartRouter from "./routes/carts.js";
 import handlebars from "express-handlebars";
 import views from "./routes/views.js"
 import { Server } from "socket.io";
-import ProductManager from "./DAO/ProductManager.js";
 import MessagesDAO from "./DAO/MessagesDAO.js";
+import ProductDao from "./DAO/ProductDAO.js";
 import mongoose from "mongoose";
 
 
@@ -30,7 +30,7 @@ app.set("views", "./views"); //Indico donde estarán las vistas
 app.set("view engine", "handlebars"); //Indicamos que para renderizar, utilice handlebars
 app.use(express.static(`public`));
 
-const manager = new ProductManager() //Inicializo la clase
+const manager = new ProductDao(); //Inicializo la clase con los métodos para trabajar con MongoDB los productos
 const Messages = new MessagesDAO();  //Inicializo la clase con los metodos del chat
 
 
@@ -39,7 +39,7 @@ socketServer.on(`connection`, async (socket) => {
     //Muestro por log que se conectó un nuevo cliente
     console.log("Nuevo Cliente Conectado");
     //Enviío la lista de productos al socket conectado
-        let products = await manager.readProducts();
+        let products = await manager.getProducts();
         socket.emit("listaProductos",  {
             products
         })
@@ -49,15 +49,19 @@ socketServer.on(`connection`, async (socket) => {
     socket.on("crearProducto", async (data) => {
         console.log(data);
         //Luego lo envío a la función addProducts, la data recibida del socket
-        await manager.addProducts( data.title, data.description, data.code, data.price, data.stock, data.category, data.thumbnail)
+        await manager.addProduct( data.title, data.description, data.code, data.price, data.stock, data.category, data.thumbnail)
     })
     
 
     //Comienzo a esuchar el socket, para eliminar un producto
     socket.on("productDelete", async (id) => {
         //Luego lo envío a la función deleteProducts
-        console.log(id);
-        await manager.deleteProduct(id)
+            await manager.deleteProduct(id);
+            //Enviío la lista de productos, para que se actualicen los cambios
+        let products = await manager.getProducts();
+        socket.emit("listaProductos",  {
+            products
+        })
     })
 
     //Comienzo a escuchar historial, para enviar el historico del chat del canal.

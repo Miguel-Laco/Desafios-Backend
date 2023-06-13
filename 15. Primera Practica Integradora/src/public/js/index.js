@@ -15,26 +15,26 @@ const listProduct = document.getElementById("contenedorProductos");
 const renderProduct = (productData) => {
     listProduct.innerHTML = "";
     const html = productData.products.map((productInfo) => {
-        listProduct.innerHTML += `
-        <div class="col my-2">
-        <div class="card text-center" style="width: 12rem;">
-        <p class="card-text">ID: ${productInfo.id}</p>
-        <h5 class="card-title"> ${productInfo.title}</h5>
-        <div class="card-body">
-        ${productInfo.thumbnail ? `${productInfo.thumbnail[0] ? `<img src=${productInfo.thumbnail[0]} class="card-img-top" alt="${productInfo.title}-1">` : ''}` : '' }
-        ${productInfo.thumbnail ? `${productInfo.thumbnail[1] ? `<img src=${productInfo.thumbnail[1]} class="card-img-top" alt="${productInfo.title}-2">` : ''}` : '' }
-        <p class="card-text">CODE: ${productInfo.code}</p>
-        <p class="card-text">DESC: ${productInfo.description}</p>
-        <p class="card-text">$ ${productInfo.price}</p>
-        <p class="card-text">STATUS: ${productInfo.status}</p>
-        <p class="card-text">CAT: ${productInfo.category}</p>
-        <p class="card-text">STOCK: ${productInfo.stock}</p>
-        <button type="button" class="btn btn-danger" onclick="productDelete(${productInfo.id})" >Borrar</button>
-        </div>
-        </div>
-        </div>`
-    })
-}
+    listProduct.innerHTML += '<div class="col my-2">' +
+        '<div class="card text-center" style="width: 12rem;">' +
+        '<p class="card-text">ID: ' + productInfo._id + '</p>' +
+        '<h5 class="card-title">' + productInfo.title + '</h5>' +
+        '<div class="card-body">' +
+        (productInfo.thumbnail && productInfo.thumbnail[0] ? '<img src=' + productInfo.thumbnail[0] + ' class="card-img-top" alt="' + productInfo.title + '-1">' : '') +
+        (productInfo.thumbnail && productInfo.thumbnail[1] ? '<img src=' + productInfo.thumbnail[1] + ' class="card-img-top" alt="' + productInfo.title + '-2">' : '') +
+        '<p class="card-text">CODE: ' + productInfo.code + '</p>' +
+        '<p class="card-text">DESC: ' + productInfo.description + '</p>' +
+        '<p class="card-text">$ ' + productInfo.price + '</p>' +
+        '<p class="card-text">STATUS: ' + productInfo.status + '</p>' +
+        '<p class="card-text">CAT: ' + productInfo.category + '</p>' +
+        '<p class="card-text">STOCK: ' + productInfo.stock + '</p>' +
+        '<button type="button" class="btn btn-danger" onclick="productDelete(\'' + productInfo._id + '\')">Borrar</button>' +
+        '</div>' +
+        '</div>' +
+        '</div>';
+    });
+};
+
 
 //Comienzo a escuchar al servidor, para recibir listaProductos y mando la información a la función que renderiza
 socket.on("listaProductos", renderProduct)
@@ -42,7 +42,7 @@ socket.on("listaProductos", renderProduct)
 //Creo una función que será llamada por cada boton borrar y recibe su id
 //Este ID lo mando al server para luego borrar la tarjeta
 function productDelete(id) {
-    socket.emit("productDelete", id)
+   socket.emit("productDelete", id)
 }
 
 
