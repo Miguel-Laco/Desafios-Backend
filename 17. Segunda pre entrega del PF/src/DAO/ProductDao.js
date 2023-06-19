@@ -1,4 +1,5 @@
 import { productsModel } from "./model/products.model.js";
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 class ProductDao{
     
@@ -63,6 +64,21 @@ class ProductDao{
         }
         return product;
     }
+
+/*     async paginateProducts(page, limit) {
+        try {
+        const options = {
+            page: parseInt(page),
+            limit: parseInt(limit),
+        };
+    
+        const result = await productsModel.paginate({}, options);
+        return result;
+        } catch (error) {
+        console.error('Error paginating products:', error);
+        throw new Error('Error paginating products');
+        }
+    } */
 
 }
 

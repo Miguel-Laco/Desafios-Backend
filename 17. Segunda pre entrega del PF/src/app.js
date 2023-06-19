@@ -4,8 +4,9 @@ import cartRouter from "./routes/carts.js";
 import handlebars from "express-handlebars";
 import views from "./routes/views.js"
 import { Server } from "socket.io";
-import MessagesDAO from "./DAO/MessagesDAO.js";
-import ProductDao from "./DAO/ProductDAO.js";
+import MessagesDAO from "./DAO/MessagesDao.js";
+import ProductDao from "./DAO/ProductDao.js";
+import CartDao from "./DAO/CartDao.js";
 import mongoose from "mongoose";
 
 
@@ -32,7 +33,7 @@ app.use(express.static(`public`));
 
 const manager = new ProductDao(); //Inicializo la clase con los métodos para trabajar con MongoDB los productos
 const Messages = new MessagesDAO();  //Inicializo la clase con los metodos del chat
-
+const cartDao = new CartDao();
 
 //Comienzo a escuchar la conección de un socket
 socketServer.on(`connection`, async (socket) => {
@@ -79,7 +80,24 @@ socketServer.on(`connection`, async (socket) => {
         socketServer.emit("messageLogs", await Messages.getMessages())
     })
 
+
+
+        //Comienzo a escuchar productToAdd, para agregar un producto al carrito
+        socket.on("productToAdd", async (data) =>{
+            //Guardo en la colección el usuario y el mensaje
+            await cartDao.addProductToCart(data._id,data.pid)
+        })
+
+//TENGO QUE AGREGAR TODA LA LÓGICA PARA ESCUCHAR EL CARRITO Y ESCUCHAR AL USAURIO AGREGANDO ITEMS AL CARRITO
+
+
+
 })
+
+
+
+
+
 
 
 

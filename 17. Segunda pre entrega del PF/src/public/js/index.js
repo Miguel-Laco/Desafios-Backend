@@ -42,7 +42,7 @@ socket.on("listaProductos", renderProduct)
 //Creo una función que será llamada por cada boton borrar y recibe su id
 //Este ID lo mando al server para luego borrar la tarjeta
 function productDelete(id) {
-   socket.emit("productDelete", id)
+    socket.emit("productDelete", id)
 }
 
 
