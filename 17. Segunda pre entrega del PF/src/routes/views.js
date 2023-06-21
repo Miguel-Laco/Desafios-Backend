@@ -38,49 +38,50 @@ views.get(`/chat`, async (req, res) => {
 //Genero una vista /products
 views.get(`/products`, async (req, res) => {
     try {
-    const { page = 1, limit = 10, sort, query } = req.query;
-
-      // Configuro opciones de paginación y filtrado
-    const options = {
-        page: parseInt(page), // Página actual
-        limit: parseInt(limit), // Límite de elementos por página
-        sort: sort === 'asc' ? 'price' : sort === 'desc' ? '-price' : null, // Ordenamiento ascendente o descendente por precio
-        lean: true, // Obtener resultados como objetos JSON simples
-    }; 
-
-    // Crear objeto de búsqueda con filtros
-    const filters = {};
-    if (query) {
-    filters.$or = [
-        { category: { $in: [query] } },
-        { title: { $in: [query] } },
-        { description: { $in: [query] } },
-    ];
-    }
-
-      // Obtengo los productos paginados y filtrados aplicando las opciones
-    const result = await productsModel.paginate(filters, options);
-
-      // Creo un variable de datos para pasar a la vista con lo que pide la consigna
-    const data = {
-        status: 'success',
-        payload: result.docs, // Productos obtenidos
-        style: 'products.css', // Aplico estilos a la vista
-        totalPages: result.totalPages, // Número total de páginas
-        prevPage: result.hasPrevPage ? result.prevPage : null, // Página anterior (null si no existe)
-        nextPage: result.hasNextPage ? result.nextPage : null, // Página siguiente (null si no existe)
-        page: result.page, // Página actual
-        hasPrevPage: result.hasPrevPage, // Indicador para saber si la página previa existe
-        hasNextPage: result.hasNextPage, // Indicador para saber si la página siguiente existe
-        prevLink: result.hasPrevPage ? `/products?page=${result.prevPage}&limit=${limit}` : null, // Enlace a la página anterior (null si no existe)
-        nextLink: result.hasNextPage ? `/products?page=${result.nextPage}&limit=${limit}` : null // Enlace a la página siguiente (null si no existe)
-    };
-      // Renderizo la vista 'products' y paso datos con toda la info
-    res.render('products', data);
-    } catch (error) {
-    console.error('Error retrieving products:', error);
-    res.status(500).send('Error retrieving products');
-    }
+        const { page = 1, limit = 10, sort, query } = req.query;
+        
+        //Configuro opciones de paginación y filtrado
+        const options = {
+            page: parseInt(page), // Página actual
+            limit: parseInt(limit), // Límite de elementos por página
+            sort: sort === 'asc' ? 'price' : sort === 'desc' ? '-price' : null, // Ordenamiento ascendente o descendente por precio
+            lean: true, // Obtener resultados como objetos JSON simples
+        }; 
+        // Crear objeto de búsqueda con filtros
+        const filters = {};
+        if (query) {
+        filters.$or = [
+            { category: { $in: [query] } },
+            { title: { $in: [query] } },
+            { description: { $in: [query] } },
+        ];
+        }
+        // Obtengo los productos paginados y filtrados aplicando las opciones
+        const result = await productsModel.paginate(filters, options);
+        // Creo un variable de datos para pasar a la vista con lo que pide la consigna
+        const data = {
+            status: 'success',
+            payload: result.docs, // Productos obtenidos
+            style: 'products.css', // Aplico estilos a la vista
+            totalPages: result.totalPages, // Número total de páginas
+            prevPage: result.hasPrevPage ? result.prevPage : null, // Página anterior (null si no existe)
+            nextPage: result.hasNextPage ? result.nextPage : null, // Página siguiente (null si no existe)
+            page: result.page, // Página actual
+            hasPrevPage: result.hasPrevPage, // Indicador para saber si la página previa existe
+            hasNextPage: result.hasNextPage, // Indicador para saber si la página siguiente existe
+            prevLink: result.hasPrevPage ? `/products?page=${result.prevPage}&limit=${limit}` : null, // Enlace a la página anterior (null si no existe)
+            nextLink: result.hasNextPage ? `/products?page=${result.nextPage}&limit=${limit}` : null // Enlace a la página siguiente (null si no existe)
+        };
+        //Agrego una validación, para ver si la página existe o no
+        if (page > result.totalPages) {
+            throw new Error("La página no existe")
+        }else{
+        // Renderizo la vista 'products' y paso datos con toda la info
+        res.render('products', data);
+        }
+        } catch (error) {
+            res.status(500).send('Error en el server');
+        }
 });
 
 
@@ -90,7 +91,7 @@ views.get(`/carts/:cid`, async(req, res) => {
     try {
         let id = req.params.cid;
         const cart = await cartDao.getCartsById(id);
-        res.render("cart", { cart: JSON.parse(JSON.stringify(cart[0]))});
+        res.render("cart", { cart: JSON.parse(JSON.stringify(cart[0])), style: "cart.css"});
     } catch (error) {
         console.log(error);
     }

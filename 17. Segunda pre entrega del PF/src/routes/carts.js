@@ -17,9 +17,13 @@ cartRouter.get("/", async (req, res) => {
 cartRouter.get("/:cid", async (req, res) => {
     try {
         let id = req.params.cid;
-        res.send(await manager.getCartsById(id));
+        let response = await manager.getCartsById(id)
+        if (!response) {
+            throw new Error("El Cart ID proporcionado no existe")
+        }
+        res.send(response);
     } catch (error) {
-        console.log(error);
+        throw new Error(error.message)
     }
 })
 
@@ -54,14 +58,14 @@ cartRouter.delete("/:cid/products/:pid", async (req, res) => {
 // Eliminar todos los productos del carrito
 cartRouter.delete("/:cid", async (req, res) => {
     try {
-      const cartId = req.params.cid;
-      await manager.deleteCart(cartId);
-      res.send("Productos eliminados del carrito exitosamente");
+    const cartId = req.params.cid;
+    await manager.deleteCart(cartId);
+    res.send("Productos eliminados del carrito exitosamente");
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: "Error al eliminar los productos del carrito" });
+    console.log(error);
+    res.status(500).json({ error: "Error al eliminar los productos del carrito" });
     }
-  });
+});
 
 /* ////////////////////////    PUT    ////////////////////////////////// */
 

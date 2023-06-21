@@ -81,16 +81,28 @@ socketServer.on(`connection`, async (socket) => {
     })
 
 
+    //Comienzo a escuchar productToAdd, para agregar un producto al carrito
+    socket.on("productToAdd", async ({cid, pid}) =>{
+            try {
+            const addPorduct = await cartDao.addProductToCart(cid,pid)
+            socket.emit("productAdd-confirm", addPorduct)
+            } catch (error) {
+                console.log(error);
+                socket.emit("productAdd-error", { message: error.message });
+            }
+    })
 
-        //Comienzo a escuchar productToAdd, para agregar un producto al carrito
-        socket.on("productToAdd", async (data) =>{
-            //Guardo en la colección el usuario y el mensaje
-            await cartDao.addProductToCart(data._id,data.pid)
-        })
 
-//TENGO QUE AGREGAR TODA LA LÓGICA PARA ESCUCHAR EL CARRITO Y ESCUCHAR AL USAURIO AGREGANDO ITEMS AL CARRITO
-
-
+    //Comienzo a escuchar deleteProductFromCart, para eliminar un producto del carrito
+    socket.on("deleteProductFromCart", async ({cid, pid}) =>{
+            try {
+            const deleteProductFromCart = await cartDao.removeProductFromCart(cid,pid)
+            socket.emit("deleteProductFromCart-confirm", deleteProductFromCart)
+            } catch (error) {
+                console.log(error);
+                socket.emit("deleteProductFromCart-error", { message: error.message });
+            }
+    })
 
 })
 

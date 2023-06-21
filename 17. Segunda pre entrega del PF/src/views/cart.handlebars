@@ -1,29 +1,25 @@
-<!-- cart.handlebars -->
 
 <div class="container">
     <div class="row">
-<h1>Carrito de compras</h1>
+        <h1>Carrito de compras</h1>
         <div class="col my-2">
             <div class="card text-center" style="width: 12rem;">
                 <p class="card-text">Detalle del carrito: {{cart._id}}</p>
-                    {{#each cart.cart}}
-                    <div class="product">
-                        <h2 class="card-title">{{this.product.title}}</h2>
-                        <p class="card-text">Cantidad: {{this.quantity}}</p>
-                        <div class="card-body">
+                {{#each cart.cart}}
+                <div class="product">
+                    <h2 class="card-title">{{this.product.title}}</h2>
+                    <p class="card-text">Cantidad: {{this.quantity}}</p>
+                    <div class="card-body">
+                        <button class="btn btn-danger" onclick="deleteProduct('{{../cart._id}}', '{{this.product._id}}')">Quitar del carrito</button>
                     </div>
-                    <button class="btn btn-danger" onclick="deleteProduct('{{_id}}, '{{this.product._id}}')">Quitar del carrito</button>
-                    </div>
-                    {{/each}}
-
-</div>
-</div>
-</div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> {{!-- Conecto la CDN de SweetAlert2 --}}
+<script src="/socket.io/socket.io.js"></script>
+<script src="../js/carts.js"></script>
 
-
-
-<script src="/socket.io/socket.io.js"></script> {{!-- Instanciamos un socket --}}
-{{!-- El script de socket siempre debe estar antes que el script propio --}}
-<script src="js/carts.js"></script> {{!-- Refernciamos al cart.js --}}

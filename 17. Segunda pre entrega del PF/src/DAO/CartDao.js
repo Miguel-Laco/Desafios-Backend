@@ -22,9 +22,12 @@ async getCarts(){
 async getCartsById(id){
     try {
         let cart = await cartsModel.find({_id: id})
+        if (!cart) {
+            throw new Error (`${cart} NO EXISTE`)
+        }
             return cart
         } catch (error) {
-        console.log(error);
+        throw new Error(error.message)
     }
 }
 
@@ -66,6 +69,7 @@ async addProductToCart(cid, pid){
                 { _id: cid, "cart.product": productAdd._id },
                 { $inc: { "cart.$.quantity": 1 } }
             );
+            return { status: "Éxito", message: "Producto agregado al carrito exitosamente" };
         } else {
             // Si el producto no existe, lo agrego al carrito
             cartID.cart.push({
@@ -73,30 +77,31 @@ async addProductToCart(cid, pid){
             quantity: 1,
         });
         await cartID.save();
+        return { status: "Éxito", message: "Producto agregado al carrito exitosamente" };
         }
-        console.log("Producto agregado al carrito exitosamente");
     } catch (error) {
-        console.log(error);
+        throw new Error(error.message)
     }
 }
 
 // Eliminar un producto del carrito
 async removeProductFromCart(cid, pid) {
     try {
-    const cart = await cartsModel.findOne({ _id: cid });
-    if (!cart) {
-        throw new Error("El carrito no existe");
-    }
-    const productIndex = cart.cart.findIndex((item) =>
-        item.product.equals(pid)
-    );
-    if (productIndex === -1) {
-        throw new Error("El producto no existe en el carrito");
-    }
-      cart.cart.splice(productIndex, 1); // Elimino el producto del arreglo cart
-      await cartsModel.updateOne({ _id: cid }, { cart: cart.cart }); // Actualiza el carrito en la base de datos
+        const cart = await cartsModel.findOne({ _id: cid });
+        if (!cart) {
+            throw new Error("El carrito no existe");
+        }
+        const productIndex = cart.cart.findIndex((item) =>
+            item.product.equals(pid)
+        );
+        if (productIndex === -1) {
+            throw new Error("El producto no existe en el carrito");
+        }
+        cart.cart.splice(productIndex, 1); // Elimino el producto del arreglo cart
+        await cartsModel.updateOne({ _id: cid }, { cart: cart.cart }); // Actualiza el carrito en la base de datos
+        return { status: "Éxito", message: "Producto eliminado del carrito exitosamente" };
     } catch (error) {
-    console.log(error);
+        throw new Error(error.message)
     }
 }
 
