@@ -20,7 +20,7 @@ const cartRouter = Router();
 
 cartRouter.get("/", crtl_GET_Cart)
 
-cartRouter.get("/:cid", crtl_GET_CartId)
+cartRouter.get("/:cid", passport.authenticate("current", { session: false }), crtl_GET_CartId)
 
 /* ////////////////////////    POST    ////////////////////////////////// */
 

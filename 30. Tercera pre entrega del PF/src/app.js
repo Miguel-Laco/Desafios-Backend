@@ -123,13 +123,15 @@ socketServer.on(`connection`, async (socket) => {
             }
     })
 
-    socket.on("purchaseCart", async (cid) => {
+    socket.on("purchaseCart", async (cid, user) => {
         try {
         await fetch(`http://localhost:8080/api/carts/${cid}/purchase`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({ user }),
+        credentials: 'same-origin'
     });
         socket.emit("reloadCart");
         } catch (error) {

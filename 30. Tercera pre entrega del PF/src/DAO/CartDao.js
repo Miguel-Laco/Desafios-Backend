@@ -105,36 +105,6 @@ async removeProductFromCart(cid, pid) {
     }
 }
 
-/* //Actualizo todo el carrito, con el arreglo que recibo (piso todo)
-async updateCart(cid, products) {
-    try {
-        console.log("ESTO RECIBE updateCart   " + products);
-    const cart = await cartsModel.findOne({ _id: cid });
-    if (!cart) {
-        throw new Error("El carrito no existe");
-    }
-    
-      // Creo un nuevo arreglo de objetos cart con los productos y cantidades
-    const updatedCart = products.map((item) => {
-        if (item._id && item.quantity) {
-              // Si el objeto tiene tanto _id como quantity, se asume que está completo. (ver luego otra validación)
-        return {
-            product: item._id,
-            quantity: item.quantity,
-        };
-        } else {
-            throw new Error("Se proporcionó un objeto inválido en el arreglo de productos");
-        }
-    });
-    
-      // Actualizo el carrito con el nuevo arreglo de productos y cantidades
-    cart.cart = updatedCart;
-    await cart.save();
-    } catch (error) {
-    console.log(error);
-    }
-} */
-
 
 async updateCart(cid, productsToKeep) {
     try {
@@ -157,11 +127,6 @@ async updateCart(cid, productsToKeep) {
         console.log(error);
     }
 }
-
-
-
-
-
 
   // Actualizar la cantidad  de un producto en el carrito
 async updateProductQuantity(cid, pid, quantity) {

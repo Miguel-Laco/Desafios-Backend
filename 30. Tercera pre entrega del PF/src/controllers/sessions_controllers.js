@@ -38,7 +38,7 @@ const crtl_POST_Login = async (req, res) => {
         req.session.user = user.email
         req.session.cart = user.cart
         //Agrego al inicio de sesión, un token para para la autenticación de la ruta /current, que usa passport-jwt en vez de session
-        const access_token = generateAuthToken({ email: req.session.user, cart: req.session.cart})
+        const access_token = generateAuthToken({ email: req.session.user})
         res.cookie(config.AUTH_TOKEN, access_token, { httpOnly: true});
         return res.redirect('/products');
     }
@@ -50,11 +50,13 @@ const crtl_GET_Login_error = async (req, res) => {
 
 const crtl_GET_Githubcallback = async(req,res)=>{
 //En este caso, devolverá el usuario, así que lo agrego a la sesión.
-    req.session.user = req.user.email;
+    let user = await userDao.getByEmail(req.user.email); 
+    req.session.user = user.email
+    req.session.cart = user.cart
     //Agrego al inicio de sesión, un token para para la autenticación de la ruta /current, que usa passport-jwt en vez de session
     const access_token = generateAuthToken({ email: req.user.email});
     res.cookie(config.AUTH_TOKEN, access_token, { httpOnly: true});
-    res.redirect("/products");
+    return res.redirect("/products");
 };
 
 const crtl_GET_Profile = async (req, res) => {

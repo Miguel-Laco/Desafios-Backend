@@ -6,8 +6,9 @@ import UserDao from "../DAO/UserDao.js";
 import { isValidPassword, createHash, cookieExtrator } from "../Utils/utils.js";
 import jwt from "passport-jwt";
 import config from "./config.js";
+import CartDao from "../DAO/CartDao.js"
 
-
+const cartManager = new CartDao();
 const LocalStrategy = local.Strategy;
 const userDao = new UserDao();
 const JWTStrategy = jwt.Strategy;
@@ -67,6 +68,7 @@ passport.use("register", new LocalStrategy(
             console.log(profile); //Muestro toda la info que llega del perfil
             let userMail = profile.emails[0].value;
             let user = await userDao.getByEmail(userMail)
+            let cart = await cartManager.addCarts();
             const fullName = profile._json.name; //Almaceno en una variable el nombre completo
             const words = fullName.split(" "); //Separo el nombre por el espacio
             const first = words[0]; //Almaceno la primer palabra como nombre
@@ -77,7 +79,8 @@ passport.use("register", new LocalStrategy(
                     last_name:second,
                     age:0, //Campo que no trae el perfil
                     email:userMail,
-                    password:"" //Al ser autenticación de terceros, no asigno un password
+                    password:"", //Al ser autenticación de terceros, no asigno un password
+                    cart: cart._id // Asignar un carrito vacío al nuevo usuario
                 }
                 let result = await userDao.createUser(newUser);
                 done(null,result);

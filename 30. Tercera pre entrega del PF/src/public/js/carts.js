@@ -7,8 +7,9 @@ function deleteProduct(cid, pid) {
   socket.emit("deleteProductFromCart", {cid, pid});
 }
 
-function purchase (cid) {
-  socket.emit("purchaseCart", cid)
+function purchase (cid, user) {
+  console.log(user);
+  socket.emit("purchaseCart", cid, user)
 }
 
 socket.on("reloadCart", () => {
@@ -36,6 +37,3 @@ socket.on("deleteProductFromCart-error", error => {
   });
 });
 
-//  DEBERÍA PONER LA LOGICA PARA ELIMINAR PRODUCTO Y VACIAR CARRITO
-// TAMBIEN DEBERÏA ACTUALIZAR EL CARRITO CADA VEZ QUE MODIFICO UN PRODUCTO
-// PERO ENTIENDO QUE NO LO PIDE LA CONSIGNA HOY

@@ -88,8 +88,8 @@ const crtl_PUT_ProdOnCart = async (req, res) => {
 //Estoy trabajando en esta función
 const crtl_POST_purchase = async (req, res) => {
     try {
-        const purchaser = req.session
-        console.log("LOG DE PURCHASE" + purchaser);
+        console.log(req.session);
+        const purchaser = req.body.user
         const cartId = req.params.cid;
         const cart = await manager.getCartsById(cartId);
 

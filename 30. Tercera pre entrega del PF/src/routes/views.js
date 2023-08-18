@@ -36,7 +36,7 @@ views.get(`/products`, authLogin, ctrl_Products);
 
 
 //Genero una vista para visualizar solo el carrito específico, según entiendo pide la consigna
-views.get(`/carts/:cid`, ctrl_Cart)
+views.get(`/carts/:cid`, authLogin, ctrl_Cart)
 
 
 export default views;

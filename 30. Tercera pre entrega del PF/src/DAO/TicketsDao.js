@@ -37,14 +37,13 @@ class TicketDao{
     }
 // ESTOY TRABAJANDO ACA
     async creatTicket(amount, purchaser){
-        console.log("LOG de ticetsDAO" + purchaser);
         let ticket;
         try {
             ticket = await ticketsModel.create({
                 code: crypto.randomUUID(),
                 purchase_datetime: new Date(),
                 amount,
-                purchaser
+                purchaser: purchaser
             })
             return {status:"Success", msg:`Su ticket ${code}, fue creado`}
         } catch (error) {
