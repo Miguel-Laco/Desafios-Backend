@@ -1,0 +1,68 @@
+{{!-- products.handlebars --}}
+<h1>Productos</h1>
+<div>
+<div class="card border-info mt-5" style="max-width: 20rem;">
+  <div class="card-header h4">Bienvenido {{userEmail}}!</div>
+  <div class="card-body">
+    <p class="card-text">Rol:</p><p class="rol">{{#if userAdmin}}Admin{{else}}User{{/if}}</p>
+    <p class="card-text">Cart ID:</p><p class="cart">{{#if userCart}}{{userCart}}{{else}}N/A{{/if}}</p>
+  </div>
+  <a class="btn btn-info" href="/api/sessions/profile">Ver Perfil</a>
+  <a class="btn btn-warning my-1" href="/carts/{{userCart}}">Ver Carrito</a>
+  <button class="btn btn-danger my-1" onclick="location.href='/api/sessions/logout'">LOGOUT</button>
+
+</div>
+<div class="row">
+{{#each payload}}
+  <div class="col-2 my-3">
+    <div class="card text-center">
+      <p class="card-text">{{_id}}</p>
+      <h2 class="card-title">{{title}}</h2>
+      <div class="card-body">
+        {{#if this.thumbnail}}
+      {{#each this.thumbnail}}
+        <img src={{this}} class="card-img-top" alt="Imagen de producto">
+      {{/each}}
+    {{/if}}
+        <p>{{description}}</p>
+        <p>Precio: {{price}}</p>
+        <p>Stock: {{stock}}</p>
+        <p>Category: {{category}}</p>
+        <button class="btn btn-success" onclick="addToCart('{{_id}}', userCartValue)">Agregar al carrito</button>
+      </div>
+    </div>
+  </div>
+{{/each}}
+</div>
+
+
+{{!-- Mostrar los enlaces de paginación --}}
+<div class="pagination">
+  {{#if prevLink}}
+    <a href="{{prevLink}}">&laquo; Anterior</a>
+  {{/if}}
+
+  {{#each totalPages}}
+    {{#if (isCurrentPage this ../currentPage)}}
+      <span class="current-page">{{this}}</span>
+    {{else}}
+      <a href="/products?page={{this}}">{{this}}</a>
+    {{/if}}
+  {{/each}}
+
+  {{#if nextLink}}
+    <a href="{{nextLink}}">Siguiente &raquo;</a>
+  {{/if}}
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> {{!-- Conecto la CDN de SweetAlert2 --}}
+{{!-- Incluyo el script de Socket.IO --}}
+<script src="/socket.io/socket.io.js"></script>
+{{!-- Incluyo el script personalizado para manejar los eventos de WebSocket --}}
+<script src="js/products.js"></script>
+{{!-- asigno userCart a una variable, porque no logro mostrarla directamente --}}
+<script>
+  const userCartValue = '{{userCart}}';
+</script>
+
