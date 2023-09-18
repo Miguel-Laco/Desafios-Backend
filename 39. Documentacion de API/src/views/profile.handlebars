@@ -1,0 +1,17 @@
+{{!-- profile.handlebars --}}
+<div class="card border-info mx-auto mt-5" style="max-width: 18rem;">
+  <div class="card-header h4">PERFIL DE USUARIO</div>
+  <div class="card-body">
+    <h5 class="card-title">Nombre: {{user.first_name}}</h5>
+    <p class="card-text">Apellido: {{user.last_name}}</p>
+    <p class="card-text">Correo electrónico: {{user.email}}</p>
+    <p class="card-text">Edad: {{user.age}}</p>
+    <p class="card-text">Rol: {{user.role}}</p>
+  </div>
+
+  <a class="btn btn-primary mt-3" href="/products">Volver</a>
+  <a class="btn btn-secondary mt-3" onclick="location.href='/api/services/mail'">Cambiar Contraseña</a>
+  <a class="btn btn-secondary mt-3" onclick="location.href='/api/users/premium/{{user.email}}'">Cambiar Rol</a>
+
+  <button class="btn btn-danger my-5" onclick="location.href='/api/sessions/logout'">LOGOUT</button>
+  {{#if message}}<div class="alert alert-danger mt-2 mb-2" role="alert">{{message}}</div>{{/if}}
