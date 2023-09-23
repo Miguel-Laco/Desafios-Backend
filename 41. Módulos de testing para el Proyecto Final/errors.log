@@ -1,0 +1,51 @@
+error: undefined
+error: undefined {"_message":"products validation failed","errors":{"category":{"kind":"required","message":"Path `category` is required.","name":"ValidatorError","path":"category","properties":{"message":"Path `category` is required.","path":"category","type":"required"}},"code":{"kind":"required","message":"Path `code` is required.","name":"ValidatorError","path":"code","properties":{"message":"Path `code` is required.","path":"code","type":"required"}},"description":{"kind":"required","message":"Path `description` is required.","name":"ValidatorError","path":"description","properties":{"message":"Path `description` is required.","path":"description","type":"required"}},"price":{"kind":"required","message":"Path `price` is required.","name":"ValidatorError","path":"price","properties":{"message":"Path `price` is required.","path":"price","type":"required"}},"stock":{"kind":"required","message":"Path `stock` is required.","name":"ValidatorError","path":"stock","properties":{"message":"Path `stock` is required.","path":"stock","type":"required"}},"title":{"kind":"string","message":"Cast to string failed for value \"{\n  title: 'Test',\n  description: 'Test Product',\n  code: 'TEST',\n  price: 1000,\n  stock: 5,\n  category: 'Test Category',\n  thumbnail: './img/hacha.jpg'\n}\" (type Object) at path \"title\"","name":"CastError","path":"title","reason":null,"stringValue":"\"{\n  title: 'Test',\n  description: 'Test Product',\n  code: 'TEST',\n  price: 1000,\n  stock: 5,\n  category: 'Test Category',\n  thumbnail: './img/hacha.jpg'\n}\"","value":{"category":"Test Category","code":"TEST","description":"Test Product","price":1000,"stock":5,"thumbnail":"./img/hacha.jpg","title":"Test"},"valueType":"Object"}}}
+error: Error con el , no existe
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: Error con el :64906850fa886ebbabd697cb, no existe
+error: undefined {"address":"::","code":"EADDRINUSE","errno":-4091,"port":8080,"syscall":"listen"}
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
