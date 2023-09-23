@@ -7,8 +7,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "mocha --require dotenv/config test/Mocha.test.js --timeout 5000",
-    "supertest": "mocha --require dotenv/config test/Supertest.test.js --timeout 5000"
+    "test": "mocha --require dotenv/config test/Supertest.test.js --timeout 5000",
+    "mochaTest": "mocha --require dotenv/config test/Mocha.test.js --timeout 5000"
   },
   "keywords": [],
   "author": "",
